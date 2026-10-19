@@ -5,13 +5,13 @@
 // Replace this with the academy's real WhatsApp number.
 // Format: country code + mobile number, digits only.
 // Example format: 919876543210
-const WHATSAPP_NUMBER = "917892527138";
+const WHATSAPP_NUMBER = "919916696575";
 
  
 
 const teachers = [
   {
-    name: "Geetha Poojari",
+    name: " Yashaswini",
     role: "FOUNDER & PRINCIPAL",
     image: "images/teacher.png",
     bio: "Senior Bharatanatyam teacher with 20+ years of experience. Certified in Bharatanatyam board examinations, with Vidvat qualifications in Music and Yoga."
@@ -36,7 +36,7 @@ const studentGroups = [
   {
     name: "Vidvat",
     description: "Advanced learning",
-    students: ["Ichara ", " Sharvya ","Manognya","Lisha"]
+    students: ["Inchara ", " Sharvya ","Manognya","Lisha"]
   },
   {
     name: "Senior",
@@ -236,13 +236,17 @@ schedule.forEach(item => {
   scheduleBody.appendChild(row);
 });
 
-// Trial class enquiry
+
+
+
+ // Trial class enquiry
+const GOOGLE_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbzr6OsShmEciyEJCatZ8_IY73g8OoFcnh47In3oXgYXm2VxZeFkVwAkKnJNnkSPg6MLgg/exec"
 const bookingForm = document.getElementById("bookingForm");
 const formMessage = document.getElementById("formMessage");
 
-bookingForm.addEventListener("submit", event => {
+bookingForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  formMessage.textContent = "";
 
   if (!bookingForm.reportValidity()) return;
 
@@ -254,37 +258,52 @@ bookingForm.addEventListener("submit", event => {
 
   if (!name || !/^[6-9]\d{9}$/.test(phone)) {
     formMessage.textContent =
-      "Please enter a name and a valid 10-digit Indian mobile number.";
+      "Please enter your name and a valid 10-digit Indian mobile number.";
     return;
   }
 
-  if (!/^\d{10,15}$/.test(WHATSAPP_NUMBER)) {
+  const submitButton = bookingForm.querySelector(
+    'button[type="submit"], input[type="submit"]'
+  );
+
+  if (submitButton) submitButton.disabled = true;
+  formMessage.textContent = "Submitting your booking...";
+
+  const booking = {
+    name: name,
+    age_group: age,
+    dance_experience: level,
+    preferred_batch: preferredTime,
+    contact_number: phone
+  };
+
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(booking)
+    });
+
     formMessage.textContent =
-      "Please configure the academy's WhatsApp number in script.js.";
-    return;
+      "Your booking request was sent. Please wait for the academy to confirm it.";
+    bookingForm.reset();
+
+  } catch (error) {
+    formMessage.textContent =
+      "We couldn't send your request. Please try again.";
+    console.error("Booking submission error:", error);
+
+  } finally {
+    if (submitButton) submitButton.disabled = false;
   }
-
-  const message = [
-    "Namaste! I would like to enquire about a Bharatanatyam trial class.",
-    "",
-    `Student name: ${name}`,
-    `Age group: ${age}`,
-    `Current level: ${level}`,
-    `Preferred batch: ${preferredTime}`,
-    `Contact number: ${phone}`,
-    "",
-    "Please share the available trial class dates and details.",
-    "Thank you!"
-  ].join("\n");
-
-  const url = "https://wa.me/" + WHATSAPP_NUMBER +
-    "?text=" + encodeURIComponent(message);
-
-  // Open WhatsApp; the visitor must review and send the message.
-  window.open(url, "_blank", "noopener,noreferrer");
-
-  formMessage.textContent =
-    "Your enquiry is ready. Review the message in WhatsApp and press Send.";
 });
 
+// Display student groups
 renderStudents();
+
+
+   
+ 

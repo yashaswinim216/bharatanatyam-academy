@@ -144,7 +144,7 @@ input:focus-visible, select:focus-visible {
   background-image:
     linear-gradient(90deg, var(--maroon-dark), rgba(75,24,36,.72) 30%, rgba(75,24,36,.1)),
     linear-gradient(0deg, rgba(38,13,20,.3), transparent),
-    url("https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=1600&q=85");
+    url(" images/background.png");
   background-position: center;
   background-size: cover;
   filter: saturate(.7);
@@ -790,5 +790,95 @@ td:first-child {
 
   *, *::before, *::after {
     transition: none !important;
+  }
+}
+
+/* Larger and more readable website fonts */
+
+body {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+p,
+li,
+label,
+input,
+select,
+textarea {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+h1 {
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: clamp(30px, 4vw, 42px);
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 1.4;
+}
+
+/* Navigation menu */
+#navigation a {
+  font-size: 18px;
+}
+
+/* Teacher and student details */
+.teacher-role,
+.student-count {
+  font-size: 16px;
+}
+
+.teacher-info p,
+.student-card li {
+  font-size: 18px;
+}
+
+/* Class timetable */
+table th,
+table td {
+  font-size: 17px;
+  padding: 14px;
+}
+
+/* Buttons and category filters */
+button,
+.category-btn {
+  font-size: 17px;
+  padding: 12px 20px;
+}
+
+/* Mobile-friendly font sizes */
+@media (max-width: 600px) {
+  body {
+    font-size: 17px;
+  }
+
+  p,
+  li,
+  label,
+  input,
+  select,
+  textarea {
+    font-size: 17px;
+  }
+
+  h1 {
+    font-size: 34px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  h3 {
+    font-size: 22px;
   }
 }
