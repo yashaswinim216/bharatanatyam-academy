@@ -1,4 +1,4 @@
-
+ 
 "use strict";
 
 // IMPORTANT:
@@ -241,7 +241,7 @@ schedule.forEach(item => {
 
  // Trial class enquiry
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbzr6OsShmEciyEJCatZ8_IY73g8OoFcnh47In3oXgYXm2VxZeFkVwAkKnJNnkSPg6MLgg/exec"
+  "https://script.google.com/macros/s/AKfycbzr6OsShmEciyEJCatZ8_IY73g8OoFcnh47In3oXgYXm2VxZeFkVwAkKnJNnkSPg6MLgg/exec";
 const bookingForm = document.getElementById("bookingForm");
 const formMessage = document.getElementById("formMessage");
 
@@ -256,11 +256,16 @@ bookingForm.addEventListener("submit", async (event) => {
   const preferredTime = document.getElementById("preferredTime").value;
   const phone = document.getElementById("phone").value.trim();
 
-  if (!name || !/^[6-9]\d{9}$/.test(phone)) {
-    formMessage.textContent =
-      "Please enter your name and a valid 10-digit Indian mobile number.";
-    return;
-  }
+  
+if (
+  !/^[A-Za-z]+(?: [A-Za-z]+)*$/.test(name) ||
+  !/^[6-9]\d{9}$/.test(phone)
+) {
+  formMessage.textContent =
+    "Please enter a valid student name using letters and spaces only, and a valid 10-digit Indian mobile number.";
+  return;
+}
+
 
   const submitButton = bookingForm.querySelector(
     'button[type="submit"], input[type="submit"]'

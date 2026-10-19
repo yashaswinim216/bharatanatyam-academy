@@ -1,4 +1,4 @@
-
+ 
 :root {
   --maroon: #702635;
   --maroon-dark: #4b1824;
@@ -144,7 +144,7 @@ input:focus-visible, select:focus-visible {
   background-image:
     linear-gradient(90deg, var(--maroon-dark), rgba(75,24,36,.72) 30%, rgba(75,24,36,.1)),
     linear-gradient(0deg, rgba(38,13,20,.3), transparent),
-    url(" images/background.png");
+    url("images/background.png");
   background-position: center;
   background-size: cover;
   filter: saturate(.7);

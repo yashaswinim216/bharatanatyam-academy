@@ -1,4 +1,4 @@
-
+ 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -183,9 +183,20 @@
         <p class="form-intro">Please share a few details.</p>
 
         <label for="studentName">Student's name</label>
-        <input id="studentName" name="studentName"
-          type="text" maxlength="80" autocomplete="name"
-          placeholder="Enter full name" required>
+        
+<input
+  id="studentName"
+  name="studentName"
+  type="text"
+  maxlength="80"
+  autocomplete="name"
+  placeholder="Enter full name"
+  pattern="[A-Za-z]+( [A-Za-z]+)*"
+  title="Please enter letters and spaces only."
+  oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '').replace(/ +/g, ' ')"
+  required
+>
+
 
         <label for="ageGroup">Age group</label>
         <select id="ageGroup" name="ageGroup" required>
@@ -217,11 +228,21 @@
           <option>Flexible</option>
         </select>
 
-        <label for="phone">Contact mobile number</label>
-        <input id="phone" name="phone" type="tel"
-          inputmode="numeric" maxlength="10"
-          pattern="[6-9][0-9]{9}"
-          placeholder="10-digit Indian mobile number" required>
+       
+<label for="phone">Contact mobile number</label>
+<input
+  id="phone"
+  name="phone"
+  type="text"
+  inputmode="numeric"
+  maxlength="10"
+  pattern="[6-9][0-9]{9}"
+  placeholder="10-digit Indian mobile number"
+  title="Enter a 10-digit Indian mobile number using numbers only."
+  oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
+  required
+>
+
 
         <button class="button button-gold submit-button" type="submit">
           Request Trial Class ↗
