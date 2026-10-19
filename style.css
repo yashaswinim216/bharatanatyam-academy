@@ -701,13 +701,22 @@ td:first-child {
     align-items: end;
   }
 
-  .hero-image {
-    inset: 0;
-    background-image:
-      linear-gradient(0deg, var(--maroon-dark), rgba(75,24,36,.7) 40%, rgba(75,24,36,.1)),
-      url("https://images.unsplash.com/photo-1504609813442-a8924e83f76e?auto=format&fit=crop&w=1000&q=80");
-    background-position: center;
-  }
+  
+.hero-image {
+  inset: 0;
+  background-image:
+    linear-gradient(
+      0deg,
+      var(--maroon-dark),
+      rgba(75,24,36,.7) 40%,
+      rgba(75,24,36,.1)
+    ),
+    url("images/background.png");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 
   .hero-content {
     width: 100%;
