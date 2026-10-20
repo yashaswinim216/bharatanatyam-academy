@@ -891,3 +891,127 @@ button,
     font-size: 22px;
   }
 }
+```css
+/* Institution contact details - matching website theme */
+.institution-contact-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  max-width: 800px;
+  margin: 28px auto 0;
+}
+
+.contact-detail-card {
+  padding: 28px 20px;
+  text-align: center;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(75, 24, 36, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.contact-detail-card:hover {
+  transform: translateY(-4px);
+}
+
+.contact-detail-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--maroon);
+  font-size: 24px;
+}
+
+.contact-detail-card h3 {
+  color: var(--maroon);
+  margin: 8px 0;
+  font-family: var(--serif);
+}
+
+.contact-detail-card p {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+
+/* Mobile responsive layout */
+@media (max-width: 600px) {
+  .institution-contact-details {
+    grid-template-columns: 1fr;
+  }
+}
+
+```css
+/* FAQ Section - Kala Bharati Theme */
+.faq-section {
+  background: var(--ivory);
+}
+
+.faq-container {
+  max-width: 900px;
+  margin: 30px auto 0;
+}
+
+.faq-item {
+  margin-bottom: 14px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--gold);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.faq-item summary {
+  padding: 20px;
+  color: var(--maroon);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  color: var(--gold);
+  font-size: 25px;
+  flex-shrink: 0;
+}
+
+.faq-item[open] summary::after {
+  content: "−";
+}
+
+.faq-item summary:hover {
+  background: var(--cream);
+}
+
+.faq-item p {
+  padding: 0 20px 20px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .faq-item summary {
+    padding: 16px;
+  }
+
+  .faq-item p {
+    padding: 0 16px 16px;
+  }
+}
+```
