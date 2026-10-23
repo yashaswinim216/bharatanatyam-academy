@@ -1,0 +1,475 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admissions | Kala Bharati Bharatanatyam Academy</title>
+    <link rel="stylesheet" href="pages.css">
+
+    <style>
+        .admission-wrapper {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .admission-intro {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            text-align: center;
+            line-height: 1.8;
+            color: var(--muted);
+        }
+
+        .admission-form {
+            padding: 32px;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: 0 12px 32px rgba(75, 24, 36, 0.08);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 14px;
+            font: inherit;
+            color: var(--ink);
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(181, 139, 75, 0.15);
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .required-note {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .submit-button {
+            margin-top: 22px;
+            padding: 14px 24px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            background: var(--maroon);
+            color: white;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: var(--maroon-dark);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        .form-message {
+            display: none;
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 8px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .form-message.success {
+            display: block;
+            color: #245b36;
+            background: #eaf6ed;
+            border: 1px solid #b9dfc2;
+        }
+
+        .form-message.error {
+            display: block;
+            color: #842029;
+            background: #fbeaec;
+            border: 1px solid #efc2c6;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admission-form {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="brand">
+            <a href="../index.html"
+               style="color: inherit; text-decoration: none;">
+                Kala Bharati
+            </a>
+        </div>
+
+        <nav aria-label="Main navigation">
+            <a href="../index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="courses.html">Courses</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="videos.html">Videos</a>
+            <a href="events.html">Events</a>
+            <a href="admissions.html" aria-current="page">Admissions</a>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <h1>Join Our Dance Family</h1>
+        <p>Begin your Bharatanatyam journey with Kala Bharati.</p>
+    </section>
+
+    <main class="content-section">
+        <div class="admission-wrapper">
+
+            <div class="admission-intro">
+                <p>
+                    Interested in learning Bharatanatyam?
+                    Fill out the enquiry form below. Our academy
+                    can follow up with you about suitable courses,
+                    batch availability, timings and fees.
+                </p>
+            </div>
+
+            <form class="admission-form" id="admissionForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="studentName">
+                            Student's full name *
+                        </label>
+                        <input
+                            type="text"
+                            id="studentName"
+                            name="studentName"
+                            placeholder="Enter full name"
+                            minlength="2"
+                            maxlength="100"
+                            autocomplete="name"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Student's age *</label>
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            placeholder="Enter age"
+                            min="3"
+                            max="100"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Contact number *</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="phone"
+                            placeholder="Enter your mobile number"
+                            autocomplete="tel"
+                            inputmode="tel"
+                            maxlength="14"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email address (optional)</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="course">Preferred course *</label>
+                        <select id="course" name="course" required>
+                            <option value="">Select a course</option>
+                            <option value="Beginners">Beginners</option>
+                            <option value="Junior Level">Junior Level</option>
+                            <option value="Senior Level">Senior Level</option>
+                            <option value="Vidvat Level">Vidvat Level</option>
+                            <option value="Not Sure">Not sure yet</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">
+                            Previous dance experience
+                        </label>
+                        <select id="experience" name="experience">
+                            <option value="None">No previous experience</option>
+                            <option value="Beginner">Some beginner experience</option>
+                            <option value="Intermediate">Intermediate experience</option>
+                            <option value="Advanced">Advanced experience</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="message">
+                            Message or questions (optional)
+                        </label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            maxlength="1000"
+                            placeholder="Tell us about your interests or ask a question..."></textarea>
+                    </div>
+
+                </div>
+
+                <p class="required-note">
+                    * Required fields. Please check your details before submitting.
+                </p>
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                    id="submitButton">
+                    Submit Enquiry
+                </button>
+
+                <div
+                    id="formMessage"
+                    class="form-message"
+                    role="status"
+                    aria-live="polite">
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <p>
+            © 2026 Kala Bharati Bharatanatyam Academy.
+            All rights reserved.
+        </p>
+    </footer>
+
+    <!-- Supabase library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+        "use strict";
+
+        const SUPABASE_URL =
+            "https://tvfwvsntplommjwvedpb.supabase.co";
+
+        // Paste your existing Supabase publishable key between the quotes.
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable__XZhyFocE3eDXgVhxg0bhA_1WxHP5Bf";
+
+        const form = document.getElementById("admissionForm");
+        const nameInput = document.getElementById("studentName");
+        const phoneInput = document.getElementById("phone");
+        const messageBox = document.getElementById("formMessage");
+        const submitButton = document.getElementById("submitButton");
+
+        function showMessage(type, message) {
+            messageBox.className = "form-message " + type;
+            messageBox.textContent = message;
+        }
+
+        // Allow alphabetic names and spaces.
+        nameInput.addEventListener("input", function () {
+            this.value = this.value
+                .replace(/[^A-Za-z ]/g, "")
+                .replace(/\s{2,}/g, " ");
+        });
+
+        // Allow digits, spaces, hyphens and a leading plus sign.
+        phoneInput.addEventListener("input", function () {
+            let value = this.value.replace(/[^\d+ -]/g, "");
+            value = value.replace(/(?!^)\+/g, "");
+            this.value = value.slice(0, 14);
+        });
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            messageBox.className = "form-message";
+            messageBox.textContent = "";
+
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            const name = nameInput.value.trim().replace(/\s+/g, " ");
+            const rawPhone = phoneInput.value.trim();
+            const normalizedPhone = rawPhone.replace(/[ -]/g, "");
+
+            const validName =
+                /^[A-Za-z]+(?: [A-Za-z]+)*$/.test(name);
+
+            const validPhone =
+                /^(?:\+91)?[6-9]\d{9}$/.test(normalizedPhone);
+
+            if (!validName) {
+                showMessage(
+                    "error",
+                    "Please enter the student's name using letters and spaces only."
+                );
+                nameInput.focus();
+                return;
+            }
+
+            if (!validPhone) {
+                showMessage(
+                    "error",
+                    "Enter a valid Indian mobile number, such as 9876543210 or +91 9876543210."
+                );
+                phoneInput.focus();
+                return;
+            }
+
+            if (
+                !window.supabase ||
+                typeof window.supabase.createClient !== "function"
+            ) {
+                showMessage(
+                    "error",
+                    "The form service did not load. Check your internet connection and refresh the page."
+                );
+                return;
+            }
+
+            if (
+                !SUPABASE_PUBLISHABLE_KEY ||
+                SUPABASE_PUBLISHABLE_KEY ===
+                    "PASTE_YOUR_EXISTING_PUBLISHABLE_KEY_HERE"
+            ) {
+                showMessage(
+                    "error",
+                    "Please add your existing Supabase publishable key to the script."
+                );
+                return;
+            }
+
+            const enquiry = {
+                student_name: name,
+                age: Number(document.getElementById("age").value),
+                phone: normalizedPhone,
+                email:
+                    document.getElementById("email").value.trim() || null,
+                course: document.getElementById("course").value,
+                experience: document.getElementById("experience").value,
+                message:
+                    document.getElementById("message").value.trim() || null
+            };
+
+            let client;
+
+            try {
+                client = window.supabase.createClient(
+                    SUPABASE_URL,
+                    SUPABASE_PUBLISHABLE_KEY
+                );
+            } catch (error) {
+                console.error("Supabase initialization error:", error);
+                showMessage(
+                    "error",
+                    "The form service could not be initialized. Please refresh and try again."
+                );
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting...";
+
+            try {
+                const { error } = await client
+                    .from("admission_enquiries")
+                    .insert([enquiry]);
+
+                if (error) {
+                    throw error;
+                }
+
+                showMessage(
+                    "success",
+                    "Thank you, " + name +
+                    "! Your enquiry has been submitted successfully."
+                    
+                );
+
+                
+form.reset();
+
+setTimeout(function () {
+    window.location.href = "../index.html";
+}, 10000);
+
+} catch (error) {
+
+                console.error(
+                    "Admission enquiry submission failed:",
+                    error
+                );
+
+                showMessage(
+                    "error",
+                    "We couldn't submit your enquiry. Please try again. Check the browser Console if the problem continues."
+                );
+
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Submit Enquiry";
+            }
+        });
+    </script>
+
+</body>
+</html>

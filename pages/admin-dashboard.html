@@ -1,0 +1,666 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Kala Bharati</title>
+    <link rel="stylesheet" href="pages.css">
+    <style>
+        .dashboard { max-width: 1050px; margin: 35px auto; padding: 20px; }
+        .welcome { color: var(--maroon); }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        .dashboard-card {
+            padding: 24px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--white);
+        }
+        .dashboard-card h3 { color: var(--maroon); }
+        .dashboard-card p { line-height: 1.6; }
+        .dashboard-card a, .logout {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 16px;
+            border-radius: 7px;
+            background: var(--maroon);
+            color: white;
+            text-decoration: none;
+            border: 0;
+            cursor: pointer;
+            font: inherit;
+        }
+        #status { margin-top: 20px; }
+        
+/* Create Account form layout */
+#createUserForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 520px;
+    margin-top: 24px;
+}
+
+#createUserForm label {
+    display: block;
+    margin-top: 8px;
+    font-weight: 600;
+    color: var(--maroon);
+}
+
+#createUserForm input,
+#createUserForm select {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--white);
+    font: inherit;
+    min-height: 44px;
+}
+
+#createUserForm input:focus,
+#createUserForm select:focus {
+    outline: 2px solid var(--maroon);
+    outline-offset: 2px;
+}
+
+#createUserForm button {
+    width: 100%;
+    margin-top: 14px;
+    padding: 13px 16px;
+}
+
+#createUserMessage {
+    margin-top: 10px;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+    #createUserForm {
+        max-width: 100%;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="brand"><a href="../index.html" style="color:inherit;text-decoration:none">Kala Bharati</a></div>
+        <nav>
+            <a href="../index.html">Home</a>
+            <button class="logout" id="logoutButton">Log Out</button>
+        </nav>
+    </header>
+
+    <main class="dashboard">
+        <h1 class="welcome">Admin Dashboard</h1>
+        <p id="welcomeMessage">Verifying your access...</p>
+        <p id="status" role="status" aria-live="polite"></p>
+
+        <section class="dashboard-grid">
+            <article class="dashboard-card">
+                <h3>Teacher Accounts</h3>
+                <p>Create and manage teacher access to the academy portal.</p>
+                <a href="#" id="teacherAction">Manage Teachers</a>
+            </article>
+
+            <article class="dashboard-card">
+                <h3>Student Accounts</h3>
+                <p>Create and manage student access to the academy portal.</p>
+                <a href="#" id="studentAction">Manage Students</a>
+            </article>
+
+            <article class="dashboard-card">
+                <h3>Admission Enquiries</h3>
+                <p>Review enquiries submitted through the academy website.</p>
+                <a href="#" id="admissionAction">View Enquiries</a>
+            </article>
+
+            <article class="dashboard-card">
+                <h3>Academy Website</h3>
+                <p>Visit the public Kala Bharati website.</p>
+                <a href="../index.html">Open Website</a>
+            </article>
+        </section>
+        
+<section class="dashboard-card" style="margin-top:25px;">
+    <h2>Create an Academy Account</h2>
+    <p>Create a login account for a teacher or student.</p>
+
+    
+<form id="createUserForm">
+    <label for="newFullName">Full Name</label>
+    <input
+        type="text"
+        id="newFullName"
+        minlength="2"
+        maxlength="100"
+        required
+    >
+
+    <label for="newUsername">Unique Username</label>
+    <input
+        type="text"
+        id="newUsername"
+        minlength="3"
+        maxlength="30"
+        pattern="[a-zA-Z0-9_]+"
+        title="Use letters, numbers, and underscores only."
+        autocomplete="off"
+        required
+    >
+
+    <label for="newRole">Account Type</label>
+    <select id="newRole" required>
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+    </select>
+
+    <label for="newPassword">Password</label>
+    <input
+        type="password"
+        id="newPassword"
+        minlength="12"
+        maxlength="128"
+        autocomplete="new-password"
+        required
+    >
+
+    <button type="submit" id="createUserButton" class="logout">
+        Create Account
+    </button>
+
+    <p id="createUserMessage" role="status" aria-live="polite"></p>
+</form>
+
+</section>
+
+<section class="dashboard-card" style="margin-top: 25px;">
+    <h2>Assign Student Course</h2>
+    <p>Select a student and assign or change their class level.</p>
+
+    <button type="button" id="loadStudentsButton" class="logout">
+        Load Students
+    </button>
+
+    <form id="assignCourseForm" style="max-width:520px; margin-top:20px;">
+        <label for="studentSelect">Select Student</label>
+        <select id="studentSelect" required disabled
+                style="display:block;width:100%;padding:12px;margin:8px 0 16px;">
+            <option value="">Load students first</option>
+        </select>
+
+        <label for="courseLevelSelect">Course Level</label>
+        <select id="courseLevelSelect" required
+                style="display:block;width:100%;padding:12px;margin:8px 0 16px;">
+            <option value="Vidvat">Vidvat</option>
+            <option value="Senior">Senior</option>
+            <option value="Junior">Junior</option>
+            <option value="Beginners">Beginners</option>
+            <option value="New Joiners">New Joiners</option>
+        </select>
+
+        <button type="submit" id="saveCourseButton"
+                class="logout" disabled>
+            Save Course Assignment
+        </button>
+    </form>
+
+    <p id="courseAssignmentStatus" role="status"
+       aria-live="polite"></p>
+</section>
+
+<section class="dashboard-card" style="margin-top: 25px;">
+    <h2>Admission Enquiries</h2>
+    <p>Review applications submitted through the Kala Bharati website.</p>
+
+    <button type="button" id="loadEnquiriesButton" class="logout">
+        Load Enquiries
+    </button>
+
+    <p id="enquiryStatus" role="status" aria-live="polite"></p>
+
+    <div style="overflow-x: auto; margin-top: 16px;">
+        <table id="enquiriesTable"
+               style="width:100%; border-collapse:collapse; min-width:900px;">
+            <thead>
+                <tr>
+                    <th style="padding:12px; text-align:left;">Name</th>
+                    <th style="padding:12px; text-align:left;">Age</th>
+                    <th style="padding:12px; text-align:left;">Phone</th>
+                    <th style="padding:12px; text-align:left;">Email</th>
+                    <th style="padding:12px; text-align:left;">Course</th>
+                    <th style="padding:12px; text-align:left;">Experience</th>
+                    <th style="padding:12px; text-align:left;">Message</th>
+                    <th style="padding:12px; text-align:left;">Submitted</th>
+                </tr>
+            </thead>
+            <tbody id="enquiriesTableBody">
+                <tr>
+                    <td colspan="8" style="padding:12px;">
+                        Click "Load Enquiries" to view applications.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://tvfwvsntplommjwvedpb.supabase.co";
+        const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__XZhyFocE3eDXgVhxg0bhA_1WxHP5Bf";
+
+        const client = window.supabase.createClient(
+            SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY
+        );
+
+        const welcome = document.getElementById("welcomeMessage");
+        const status = document.getElementById("status");
+
+        async function protectDashboard() {
+            try {
+                const { data: authData, error: authError } =
+                    await client.auth.getUser();
+
+                if (authError || !authData.user) {
+                    window.location.replace("admin-login.html");
+                    return;
+                }
+
+                const { data: profile, error: profileError } = await client
+                    .from("profiles")
+                    .select("full_name, role")
+                    .eq("id", authData.user.id)
+                    .single();
+
+                if (profileError || !profile || profile.role !== "admin") {
+                    await client.auth.signOut();
+                    window.location.replace("admin-login.html");
+                    return;
+                }
+
+                welcome.textContent = "Welcome, " +
+                    (profile.full_name || "Administrator") + "!";
+                status.textContent = "Admin access verified.";
+
+            } catch (error) {
+                status.textContent = "Could not verify access. Please log in again.";
+            }
+        }
+
+        document.getElementById("logoutButton").addEventListener("click", async () => {
+            await client.auth.signOut();
+            window.location.replace("admin-login.html");
+        });
+
+        
+document.getElementById("teacherAction").addEventListener("click", event => {
+    event.preventDefault();
+
+    const roleSelect = document.getElementById("newRole");
+    const accountForm = document.getElementById("createUserForm");
+
+    roleSelect.value = "teacher";
+    accountForm.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    document.getElementById("newFullName").focus();
+});
+
+
+        
+document.getElementById("studentAction").addEventListener("click", event => {
+    event.preventDefault();
+
+    const roleSelect = document.getElementById("newRole");
+    const accountForm = document.getElementById("createUserForm");
+
+    roleSelect.value = "student";
+    accountForm.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    document.getElementById("newFullName").focus();
+});
+
+
+
+
+       
+document.getElementById("admissionAction").addEventListener("click", event => {
+    event.preventDefault();
+
+    const enquirySection = document.getElementById("enquiriesTable");
+
+    if (enquirySection) {
+        enquirySection.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+        document.getElementById("loadEnquiriesButton").click();
+    }
+});
+
+
+const createUserForm = document.getElementById("createUserForm");
+const createUserButton = document.getElementById("createUserButton");
+const createUserMessage = document.getElementById("createUserMessage");
+
+if (createUserForm) {
+    createUserForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        createUserButton.disabled = true;
+        createUserButton.textContent = "Creating Account...";
+        createUserMessage.textContent = "";
+
+        try {
+            const { data, error } = await client.functions.invoke(
+                "admin-create-user",
+                {
+                    body: {
+                        full_name: document.getElementById("newFullName").value.trim(),
+                        username: document.getElementById("newUsername").value.trim().toLowerCase(),
+                        password: document.getElementById("newPassword").value,
+                        role: document.getElementById("newRole").value
+                    }
+                }
+            );
+
+            if (error) {
+                let errorMessage = error.message || "Account creation failed.";
+
+                try {
+                    if (error.context && typeof error.context.json === "function") {
+                        const details = await error.context.json();
+                        if (details.error) {
+                            errorMessage = details.error;
+                        }
+                    }
+                } catch (_) {}
+
+                throw new Error(errorMessage);
+            }
+
+            if (!data || !data.user) {
+                throw new Error(data?.error || "Account creation was not confirmed.");
+            }
+
+            createUserMessage.textContent =
+                "Success! Created " + data.user.role +
+                " account: " + data.user.username;
+
+            createUserForm.reset();
+
+        } catch (error) {
+            createUserMessage.textContent =
+                error.message || "Something went wrong. Please try again.";
+        } finally {
+            createUserButton.disabled = false;
+            createUserButton.textContent = "Create Account";
+        }
+    });
+}
+
+
+const loadEnquiriesButton = document.getElementById("loadEnquiriesButton");
+const enquiryStatus = document.getElementById("enquiryStatus");
+const enquiriesTableBody = document.getElementById("enquiriesTableBody");
+
+if (loadEnquiriesButton) {
+    loadEnquiriesButton.addEventListener("click", async function () {
+        loadEnquiriesButton.disabled = true;
+        enquiryStatus.textContent = "Loading enquiries...";
+
+        try {
+            // Confirm the current user is signed in.
+            const { data: authData, error: authError } =
+                await client.auth.getUser();
+
+            if (authError || !authData.user) {
+                throw new Error("Please log in again.");
+            }
+
+            // Verify the user's Admin role.
+            const { data: profile, error: profileError } = await client
+                .from("profiles")
+                .select("role")
+                .eq("id", authData.user.id)
+                .single();
+
+            if (profileError || profile?.role !== "admin") {
+                throw new Error("Only an Admin can view admission enquiries.");
+            }
+
+            const { data, error } = await client
+                .from("admission_enquiries")
+                .select("student_name, age, phone, email, course, experience, message, created_at")
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                throw error;
+            }
+
+            enquiriesTableBody.replaceChildren();
+
+            if (!data || data.length === 0) {
+                const row = document.createElement("tr");
+                const cell = document.createElement("td");
+                cell.colSpan = 8;
+                cell.textContent = "No admission enquiries found.";
+                cell.style.padding = "12px";
+                row.appendChild(cell);
+                enquiriesTableBody.appendChild(row);
+            } else {
+                data.forEach(function (enquiry) {
+                    const row = document.createElement("tr");
+
+                    const values = [
+                        enquiry.student_name,
+                        enquiry.age,
+                        enquiry.phone,
+                        enquiry.email,
+                        enquiry.course,
+                        enquiry.experience,
+                        enquiry.message,
+                        enquiry.created_at
+                            ? new Date(enquiry.created_at).toLocaleString()
+                            : ""
+                    ];
+
+                    values.forEach(function (value) {
+                        const cell = document.createElement("td");
+                        cell.style.padding = "12px";
+                        cell.style.borderTop = "1px solid var(--line)";
+                        // Use textContent so enquiry text is not interpreted as HTML.
+                        cell.textContent = value == null ? "" : String(value);
+                        row.appendChild(cell);
+                    });
+
+                    enquiriesTableBody.appendChild(row);
+                });
+            }
+
+            enquiryStatus.textContent =
+                "Loaded " + data.length + " admission enquiry/enquiries.";
+
+        } catch (error) {
+            enquiryStatus.textContent =
+                error.message || "Could not load admission enquiries.";
+        } finally {
+            loadEnquiriesButton.disabled = false;
+        }
+    });
+}
+
+const loadStudentsButton =
+    document.getElementById("loadStudentsButton");
+
+const studentSelect = document.getElementById("studentSelect");
+const courseLevelSelect =
+    document.getElementById("courseLevelSelect");
+
+const assignCourseForm =
+    document.getElementById("assignCourseForm");
+
+const saveCourseButton =
+    document.getElementById("saveCourseButton");
+
+const courseAssignmentStatus =
+    document.getElementById("courseAssignmentStatus");
+
+async function verifyAdminForAssignment() {
+    const { data: authData, error: authError } =
+        await client.auth.getUser();
+
+    if (authError || !authData.user) {
+        throw new Error("Please log in again.");
+    }
+
+    const { data: profile, error } = await client
+        .from("profiles")
+        .select("role")
+        .eq("id", authData.user.id)
+        .single();
+
+    if (error || profile?.role !== "admin") {
+        throw new Error("Only an Admin can assign student courses.");
+    }
+}
+
+loadStudentsButton.addEventListener("click", async () => {
+    loadStudentsButton.disabled = true;
+    courseAssignmentStatus.textContent = "Loading students...";
+
+    try {
+        await verifyAdminForAssignment();
+
+        const { data: students, error } = await client
+            .from("profiles")
+            .select("id, full_name, username, course_level")
+            .eq("role", "student")
+            .order("full_name");
+
+        if (error) throw error;
+
+        studentSelect.replaceChildren();
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Choose a student";
+        studentSelect.appendChild(placeholder);
+
+        (students || []).forEach(student => {
+            const option = document.createElement("option");
+            option.value = student.id;
+            option.textContent =
+                `${student.full_name || "Student"} (${student.username || "No username"})`;
+
+            option.dataset.level = student.course_level || "";
+            studentSelect.appendChild(option);
+        });
+
+        studentSelect.disabled = false;
+        saveCourseButton.disabled = !students?.length;
+
+        courseAssignmentStatus.textContent = students?.length
+            ? `Loaded ${students.length} student(s).`
+            : "No student accounts found.";
+
+        updateSelectedCourse();
+
+    } catch (error) {
+        courseAssignmentStatus.textContent =
+            error.message || "Could not load students.";
+    } finally {
+        loadStudentsButton.disabled = false;
+    }
+});
+
+function updateSelectedCourse() {
+    const selectedOption =
+        studentSelect.options[studentSelect.selectedIndex];
+
+    if (!selectedOption || !selectedOption.value) return;
+
+    const currentLevel = selectedOption.dataset.level || "";
+    const matchingOption = Array.from(courseLevelSelect.options)
+        .find(option =>
+            option.value.toLowerCase() === currentLevel.toLowerCase()
+        );
+
+    if (matchingOption) {
+        courseLevelSelect.value = matchingOption.value;
+    }
+}
+
+studentSelect.addEventListener("change", updateSelectedCourse);
+
+assignCourseForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const studentId = studentSelect.value;
+    const courseLevel = courseLevelSelect.value;
+
+    if (!studentId) {
+        courseAssignmentStatus.textContent = "Please select a student.";
+        return;
+    }
+
+    saveCourseButton.disabled = true;
+    saveCourseButton.textContent = "Saving...";
+    courseAssignmentStatus.textContent = "";
+
+    try {
+        await verifyAdminForAssignment();
+
+        const { data, error } = await client
+            .from("profiles")
+            .update({ course_level: courseLevel })
+            .eq("id", studentId)
+            .eq("role", "student")
+            .select("id")
+            .maybeSingle();
+
+        if (error) throw error;
+
+        if (!data) {
+            throw new Error(
+                "No student was updated. Check your Supabase permissions."
+            );
+        }
+
+        const selectedOption =
+            studentSelect.options[studentSelect.selectedIndex];
+
+        selectedOption.dataset.level = courseLevel;
+
+        courseAssignmentStatus.textContent =
+            "Course assigned successfully: " + courseLevel +
+            ". The student will see the updated timetable after refreshing their dashboard.";
+
+    } catch (error) {
+        console.error("Course assignment error:", error);
+        courseAssignmentStatus.textContent =
+            error.message || "Could not save the course assignment.";
+    } finally {
+        saveCourseButton.disabled = false;
+        saveCourseButton.textContent = "Save Course Assignment";
+    }
+});
+
+
+        protectDashboard();
+    </script>
+</body>
+</html>

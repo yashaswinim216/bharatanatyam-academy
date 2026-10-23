@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events | Kala Bharati Bharatanatyam Academy</title>
+    <link rel="stylesheet" href="pages.css">
+
+    <style>
+        .events-intro {
+            max-width: 760px;
+            margin: 0 auto 36px;
+            text-align: center;
+            line-height: 1.8;
+            color: var(--muted);
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 24px;
+        }
+
+        .event-card {
+            overflow: hidden;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(75, 24, 36, 0.07);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(75, 24, 36, 0.12);
+        }
+
+        .event-card img {
+            display: block;
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .event-content {
+            padding: 22px;
+        }
+
+        .event-type {
+            display: inline-block;
+            padding: 6px 10px;
+            margin-bottom: 12px;
+            border-radius: 20px;
+            background: #f7eddf;
+            color: var(--maroon);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .event-content h2 {
+            margin: 0 0 12px;
+            color: var(--maroon);
+            font-size: 21px;
+        }
+
+        .event-content p {
+            line-height: 1.7;
+            color: var(--muted);
+        }
+
+        .event-details {
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid var(--line);
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .event-cta {
+            margin-top: 40px;
+            padding: 32px;
+            text-align: center;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+        }
+
+        .event-cta p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .event-cta a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 24px;
+            border-radius: 8px;
+            background: var(--maroon);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .event-cta a:hover {
+            background: var(--maroon-dark);
+        }
+
+        @media (max-width: 900px) {
+            .events-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .event-content {
+                padding: 18px;
+            }
+
+            .event-cta {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="brand">
+            <a href="../index.html"
+               style="color:inherit;text-decoration:none">
+                Kala Bharati
+            </a>
+        </div>
+
+        <nav aria-label="Main navigation">
+            <a href="../index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="courses.html">Courses</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="videos.html">Videos</a>
+            <a href="events.html" aria-current="page">Events</a>
+            <a href="admissions.html">Admissions</a>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <h1>Events & Celebrations</h1>
+        <p>Celebrating rhythm, tradition and the beauty of Bharatanatyam.</p>
+    </section>
+
+    <main class="content-section">
+
+        <div class="events-intro">
+            <p>
+                At Kala Bharati Bharatanatyam Academy, every performance
+                is an opportunity to celebrate our cultural heritage,
+                develop confidence and share the beauty of classical dance.
+                Explore the kinds of events and learning opportunities
+                we feature at our academy.
+            </p>
+        </div>
+
+        <div class="events-grid">
+
+            <article class="event-card">
+                <img
+                    src="../images/dance1.jpg"
+                    alt="Classical Bharatanatyam dance performance"
+                    loading="lazy">
+
+                <div class="event-content">
+                    <span class="event-type">Performance</span>
+                    <h2>Annual Day Celebration</h2>
+                    <p>
+                        A celebration of our students' dedication,
+                        progress and love for Bharatanatyam through
+                        classical dance performances.
+                    </p>
+                    <div class="event-details">
+                        
+<strong>Schedule:</strong> Every year in May<br>
+<strong>Venue:</strong> To be announced
+
+                    </div>
+                </div>
+            </article>
+
+            <article class="event-card">
+                <img
+                    src="../images/dance2.jpg"
+                    alt="Traditional Indian classical dance presentation"
+                    loading="lazy">
+
+                <div class="event-content">
+                    <span class="event-type">Cultural Event</span>
+                    <h2>Festival Celebrations</h2>
+                    <p>
+                        Special cultural programs that bring together
+                        music, devotion, tradition and the expressive
+                        art of Bharatanatyam.
+                    </p>
+                    <div class="event-details">
+                        <strong>Date:</strong> Announced seasonally<br>
+                        <strong>Venue:</strong> To be announced
+                    </div>
+                </div>
+            </article>
+
+            <article class="event-card">
+                <img
+                    src="../images/dance3.jpg"
+                    alt="Bharatanatyam students learning classical dance"
+                    loading="lazy">
+
+                <div class="event-content">
+                    <span class="event-type">Learning</span>
+                    <h2>Dance Workshops</h2>
+                    <p>
+                        Opportunities to practise basic movements,
+                        rhythm, expressions and the foundations
+                        of Indian classical dance.
+                    </p>
+                    <div class="event-details">
+                        
+<strong>Schedule:</strong> Once every four months<br>
+<strong>Registration:</strong> Contact the academy
+
+                    </div>
+                </div>
+            </article>
+
+            <article class="event-card">
+                <img
+                    src="../images/dance4.jpg"
+                    alt="Bharatanatyam students performing on stage"
+                    loading="lazy">
+
+                <div class="event-content">
+                    <span class="event-type">Student Showcase</span>
+                    <h2>Student Performances</h2>
+                    <p>
+                        A platform for students to share what they have
+                        learnt, build stage confidence and celebrate
+                        their artistic journey.
+                    </p>
+                    <div class="event-details">
+                        <strong>Date:</strong> To be announced<br>
+                        <strong>Venue:</strong> To be announced
+                    </div>
+                </div>
+            </article>
+
+            <article class="event-card">
+                <img
+                    src="../images/dance5.jpg"
+                    alt="Traditional Bharatanatyam costume and performance"
+                    loading="lazy">
+
+                <div class="event-content">
+                    <span class="event-type">Special Occasion</span>
+                    <h2>Classical Dance Presentations</h2>
+                    <p>
+                        Special presentations celebrating the stories,
+                        music, gestures and traditions that make
+                        Bharatanatyam unique.
+                    </p>
+                    <div class="event-details">
+                        <strong>Date:</strong> To be announced<br>
+                        <strong>Venue:</strong> To be announced
+                    </div>
+                </div>
+            </article>
+
+            <article class="event-card">
+                <img
+                    src="../images/dance6.jpg"
+                    alt="Classical Indian dance practice"
+                    loading="lazy">
+
+                <div class="event-content">
+                    <span class="event-type">Academy Activity</span>
+                    <h2>Practice & Learning Sessions</h2>
+                    <p>
+                        Dedicated sessions that encourage discipline,
+                        consistency, rhythm and steady development
+                        of dance technique.
+                    </p>
+                    <div class="event-details">
+                        <strong>Date:</strong> Based on academy schedule<br>
+                        <strong>Enquiries:</strong> Contact the academy
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <section class="event-cta">
+            <h2>Interested in Participating?</h2>
+            <p>
+                Contact Kala Bharati Bharatanatyam Academy to enquire
+                about upcoming programs, workshops and student admissions.
+            </p>
+            <a href="admissions.html">Send an Enquiry</a>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <p>
+            © 2026 Kala Bharati Bharatanatyam Academy.
+            All rights reserved.
+        </p>
+    </footer>
+
+</body>
+</html>

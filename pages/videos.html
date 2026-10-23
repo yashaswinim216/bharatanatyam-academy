@@ -1,0 +1,595 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dance Videos | Kala Bharati</title>
+  <link rel="stylesheet" href="pages.css">
+
+  <style>
+    /* Page introduction */
+    .video-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 75px 8%;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 85% 25%, #98634a66, transparent 32%),
+        linear-gradient(120deg, #35151f, #702635 60%, #4b1824);
+    }
+
+    .video-hero::after {
+      content: "❋";
+      position: absolute;
+      right: 7%;
+      bottom: -70px;
+      color: #e4bd7966;
+      font-size: 250px;
+      animation: slowRotate 25s linear infinite;
+      pointer-events: none;
+    }
+
+    .video-hero h1 {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      font-size: clamp(38px, 6vw, 68px);
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .video-hero p {
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+    }
+
+    .demo-label {
+      display: inline-block;
+      padding: 5px 11px;
+      border: 1px solid #d7b477;
+      border-radius: 30px;
+      color: #f0d4a1;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+    }
+
+    /* Filters */
+    .video-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 25px 0 30px;
+    }
+
+    .filter-btn {
+      padding: 10px 17px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: var(--white);
+      color: var(--maroon);
+      font: inherit;
+      cursor: pointer;
+      transition: background 0.25s, color 0.25s,
+                  transform 0.25s;
+    }
+
+    .filter-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+      background: var(--maroon);
+      color: white;
+      border-color: var(--maroon);
+    }
+
+    /* Video card grid */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 25px;
+    }
+
+    .dance-card {
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 7px 22px #4b18240d;
+      animation: fadeUp 0.65s ease both;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .dance-card:hover {
+      transform: translateY(-7px);
+      box-shadow: 0 16px 32px #4b182422;
+    }
+
+    .dance-card[hidden] {
+      display: none;
+    }
+
+    .dance-thumbnail {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background: #29151c;
+    }
+
+    .dance-thumbnail img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .dance-card:hover .dance-thumbnail img {
+      transform: scale(1.08);
+    }
+
+    .demo-badge {
+      position: absolute;
+      top: 13px;
+      left: 13px;
+      padding: 5px 9px;
+      border-radius: 4px;
+      background: #702635eF;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      place-items: center;
+      width: 58px;
+      height: 58px;
+      padding: 0 0 0 4px;
+      border: 1px solid #ffffff99;
+      border-radius: 50%;
+      background: #702635e8;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      transition: background 0.25s, transform 0.25s;
+    }
+
+    .play-button:hover {
+      background: #4b1824;
+      transform: translate(-50%, -50%) scale(1.12);
+    }
+
+    .dance-info {
+      padding: 19px;
+    }
+
+    .dance-category {
+      color: #9a7742;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    .dance-info h3 {
+      margin: 8px 0;
+      color: var(--maroon);
+      font-size: 21px;
+    }
+
+    .dance-info p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .demo-note {
+      margin-top: 32px;
+      padding: 16px 20px;
+      border-left: 4px solid var(--gold);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 14px;
+    }
+
+    /* Preview popup */
+    .preview-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: #1b1015d9;
+      backdrop-filter: blur(5px);
+    }
+
+    .preview-modal.open {
+      display: flex;
+      animation: modalFade 0.25s ease;
+    }
+
+    .preview-box {
+      position: relative;
+      width: min(520px, 100%);
+      overflow: hidden;
+      border-radius: 14px;
+      background: var(--ivory);
+      box-shadow: 0 25px 80px #0006;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .preview-box img {
+      display: block;
+      width: 100%;
+      max-height: 330px;
+      object-fit: cover;
+    }
+
+    .preview-content {
+      padding: 25px;
+    }
+
+    .preview-content h2 {
+      color: var(--maroon);
+    }
+
+    .preview-content p {
+      color: var(--muted);
+    }
+
+    .close-preview {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 50%;
+      background: white;
+      color: var(--maroon);
+      font-size: 25px;
+      cursor: pointer;
+    }
+
+    .preview-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 11px 17px;
+      border-radius: 5px;
+      background: var(--maroon);
+      color: white;
+    }
+
+    .preview-link:hover {
+      background: var(--maroon-dark);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slowRotate {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes modalFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 900px) {
+      .video-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 580px) {
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .video-hero {
+        padding: 55px 7%;
+      }
+
+      .dance-thumbnail {
+        aspect-ratio: 5 / 3;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="site-header">
+    <a class="brand" href="../index.html">Kala Bharati</a>
+    <nav aria-label="Main navigation">
+      <a href="../index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="videos.html">Videos</a>
+      <a href="events.html">Events</a>
+      <a href="admissions.html">Admissions</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="video-hero">
+      <span class="demo-label">ACADEMY SHOWCASE · DEMO</span>
+      <h1>Expressions of <em>Bharatanatyam</em></h1>
+      <p>
+        Discover the grace, rhythm, expressions and traditions
+        of Indian classical dance through our visual showcase.
+      </p>
+    </section>
+
+    <section class="content-section">
+      <p class="eyebrow">A CELEBRATION OF CLASSICAL DANCE</p>
+      <h2>Dance Moments</h2>
+      <p>
+        Browse our sample showcase. Select a category or open
+        a card to learn more about the demo.
+      </p>
+
+      <div class="video-filters" aria-label="Filter dance cards">
+        <button class="filter-btn active" data-filter="all"
+                aria-pressed="true">All Moments</button>
+        <button class="filter-btn" data-filter="performance"
+                aria-pressed="false">Performances</button>
+        <button class="filter-btn" data-filter="learning"
+                aria-pressed="false">Learning</button>
+        <button class="filter-btn" data-filter="tradition"
+                aria-pressed="false">Tradition</button>
+      </div>
+
+      <div class="video-grid">
+
+        <article class="dance-card" data-category="performance">
+          <div class="dance-thumbnail">
+            <img src="../images/dance1.jpg"
+                 alt="Bharatanatyam performance sample"
+                 loading="lazy">
+            <span class="demo-badge">DEMO</span>
+            <button class="play-button" aria-label="Preview Classical Expressions"
+                    data-title="Classical Expressions"
+                    data-image="../images/dance1.jpg"
+                    data-description="A sample showcase card for a Bharatanatyam stage performance. Replace this demo with a real academy video when available.">▶</button>
+          </div>
+          <div class="dance-info">
+            <span class="dance-category">Performance</span>
+            <h3>Classical Expressions</h3>
+            <p>Graceful movements, rhythm and expressive storytelling.</p>
+          </div>
+        </article>
+
+        <article class="dance-card" data-category="learning">
+          <div class="dance-thumbnail">
+            <img src="../images/dance2.jpg"
+                 alt="Bharatanatyam practice sample"
+                 loading="lazy">
+            <span class="demo-badge">DEMO</span>
+            <button class="play-button" aria-label="Preview Rhythm and Practice"
+                    data-title="Rhythm and Practice"
+                    data-image="../images/dance2.jpg"
+                    data-description="A sample card for practice sessions and dance learning. No video is attached to this demo yet.">▶</button>
+          </div>
+          <div class="dance-info">
+            <span class="dance-category">Learning</span>
+            <h3>Rhythm and Practice</h3>
+            <p>Explore the discipline and precision behind each movement.</p>
+          </div>
+        </article>
+
+        <article class="dance-card" data-category="tradition">
+          <div class="dance-thumbnail">
+            <img src="../images/dance3.jpg"
+                 alt="Traditional Bharatanatyam costume sample"
+                 loading="lazy">
+            <span class="demo-badge">DEMO</span>
+            <button class="play-button" aria-label="Preview Beauty of Tradition"
+                    data-title="Beauty of Tradition"
+                    data-image="../images/dance3.jpg"
+                    data-description="A sample showcase celebrating traditional dance attire, jewellery and artistic heritage.">▶</button>
+          </div>
+          <div class="dance-info">
+            <span class="dance-category">Tradition</span>
+            <h3>Beauty of Tradition</h3>
+            <p>Celebrating the costume, details and heritage of classical dance.</p>
+          </div>
+        </article>
+
+        <article class="dance-card" data-category="performance">
+          <div class="dance-thumbnail">
+            <img src="../images/dance4.jpg"
+                 alt="Classical dance stage sample"
+                 loading="lazy">
+            <span class="demo-badge">DEMO</span>
+            <button class="play-button" aria-label="Preview On Stage"
+                    data-title="On Stage"
+                    data-image="../images/dance4.jpg"
+                    data-description="A sample card for academy performances and stage appearances. Add your own event recording here later.">▶</button>
+          </div>
+          <div class="dance-info">
+            <span class="dance-category">Performance</span>
+            <h3>On Stage</h3>
+            <p>Moments of confidence, expression and dedication.</p>
+          </div>
+        </article>
+
+        <article class="dance-card" data-category="learning">
+          <div class="dance-thumbnail">
+            <img src="../images/dance5.jpg"
+                 alt="Dance workshop sample"
+                 loading="lazy">
+            <span class="demo-badge">DEMO</span>
+            <button class="play-button" aria-label="Preview Learning Together"
+                    data-title="Learning Together"
+                    data-image="../images/dance5.jpg"
+                    data-description="A sample card for classes, workshops and shared learning experiences.">▶</button>
+          </div>
+          <div class="dance-info">
+            <span class="dance-category">Learning</span>
+            <h3>Learning Together</h3>
+            <p>Every practice is a step towards artistic growth.</p>
+          </div>
+        </article>
+
+        <article class="dance-card" data-category="tradition">
+          <div class="dance-thumbnail">
+            <img src="../images/dance6.jpg"
+                 alt="Indian classical dance celebration sample"
+                 loading="lazy">
+            <span class="demo-badge">DEMO</span>
+            <button class="play-button" aria-label="Preview Celebrating Dance"
+                    data-title="Celebrating Dance"
+                    data-image="../images/dance6.jpg"
+                    data-description="A sample showcase for dance celebrations and special academy occasions. Replace this text with details of a real event when available.">▶</button>
+          </div>
+          <div class="dance-info">
+            <span class="dance-category">Tradition</span>
+            <h3>Celebrating Dance</h3>
+            <p>Keeping classical art and cultural traditions alive.</p>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="demo-note">
+        <strong>Demo content:</strong> These cards use sample photos and
+        descriptions. They do not contain playable videos. Actual
+        academy recordings will be added later.
+      </div>
+    </section>
+  </main>
+
+  <div class="preview-modal" id="previewModal"
+       role="dialog" aria-modal="true"
+       aria-labelledby="previewTitle" aria-hidden="true">
+    <div class="preview-box">
+      <button class="close-preview" id="closePreview"
+              aria-label="Close preview">×</button>
+      <img id="previewImage" src="../images/dance1.jpg"
+           alt="Dance preview">
+      <div class="preview-content">
+        <span class="demo-label"
+              style="background:var(--maroon)">DEMO PREVIEW</span>
+        <h2 id="previewTitle">Sample dance preview</h2>
+        <p id="previewDescription"></p>
+        <p><strong>This is a visual preview, not a video player.</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© Kala Bharati Bharatanatyam Academy</p>
+    <a href="../index.html">Return to Home</a>
+  </footer>
+
+  <script>
+    // Category filters
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const danceCards = document.querySelectorAll(".dance-card");
+
+    filterButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const selectedCategory = button.dataset.filter;
+
+        filterButtons.forEach(item => {
+          const isActive = item === button;
+          item.classList.toggle("active", isActive);
+          item.setAttribute("aria-pressed", String(isActive));
+        });
+
+        danceCards.forEach(card => {
+          const shouldShow =
+            selectedCategory === "all" ||
+            card.dataset.category === selectedCategory;
+
+          card.hidden = !shouldShow;
+
+          if (shouldShow) {
+            card.style.animation = "none";
+            void card.offsetWidth;
+            card.style.animation = "";
+          }
+        });
+      });
+    });
+
+    // Demo preview popup
+    const modal = document.getElementById("previewModal");
+    const closeButton = document.getElementById("closePreview");
+    const previewImage = document.getElementById("previewImage");
+    const previewTitle = document.getElementById("previewTitle");
+    const previewDescription =
+      document.getElementById("previewDescription");
+
+    let previousFocus = null;
+
+    document.querySelectorAll(".play-button").forEach(button => {
+      button.addEventListener("click", () => {
+        previousFocus = button;
+
+        previewTitle.textContent = button.dataset.title;
+        previewImage.src = button.dataset.image;
+        previewDescription.textContent =
+          button.dataset.description;
+
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        closeButton.focus();
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+
+      if (previousFocus) previousFocus.focus();
+    }
+
+    closeButton.addEventListener("click", closeModal);
+
+    modal.addEventListener("click", event => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && modal.classList.contains("open")) {
+        closeModal();
+      }
+    });
+  </script>
+
+</body>
+</html>

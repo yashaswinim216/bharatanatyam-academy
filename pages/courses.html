@@ -1,0 +1,438 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Our Courses | Kala Bharati Bharatanatyam Academy</title>
+
+    <meta name="description"
+          content="Explore Bharatanatyam learning levels at Kala Bharati Bharatanatyam Academy. Find a suitable course and enquire about admissions.">
+
+    <link rel="stylesheet" href="pages.css">
+
+    <style>
+        /* Courses page */
+        .courses-intro {
+            max-width: 760px;
+            margin: 0 auto 40px;
+            text-align: center;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 28px;
+        }
+
+        .course-card {
+            position: relative;
+            overflow: hidden;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: 0 8px 24px rgba(75, 24, 36, 0.07);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            animation: courseFadeIn 0.7s ease both;
+        }
+
+        .course-card:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .course-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .course-card:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 36px rgba(75, 24, 36, 0.14);
+        }
+
+        .course-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            background: var(--cream);
+        }
+
+.course-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+/* Fix only the Junior Level image */
+.course-image img.junior-course-img {
+    object-fit: contain;
+    object-position: center;
+    background: var(--cream);
+}
+
+
+        .course-card:hover .course-image img {
+            transform: scale(1.07);
+        }
+
+        .course-level {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            padding: 8px 14px;
+            border-radius: 30px;
+            background: var(--maroon);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .course-content {
+            padding: 26px;
+        }
+
+        .course-content h2 {
+            margin: 0 0 12px;
+            color: var(--maroon);
+            font-size: 25px;
+        }
+
+        .course-content p {
+            color: var(--muted);
+            line-height: 1.8;
+            margin-bottom: 18px;
+        }
+
+        .course-content h3 {
+            color: var(--ink);
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .course-topics {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px;
+        }
+
+        .course-topics li {
+            position: relative;
+            padding: 7px 0 7px 25px;
+            color: var(--ink);
+            line-height: 1.5;
+        }
+
+        .course-topics li::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .course-button {
+            display: inline-block;
+            padding: 12px 20px;
+            background: var(--maroon);
+            color: white;
+            text-decoration: none;
+            border: 1px solid var(--maroon);
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .course-button:hover {
+            background: var(--gold);
+            border-color: var(--gold);
+            color: white;
+        }
+
+        .course-note {
+            margin-top: 45px;
+            padding: 30px;
+            text-align: center;
+            background: var(--cream);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+        }
+
+        .course-note h2 {
+            color: var(--maroon);
+            margin-top: 0;
+        }
+
+        .course-note p {
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .course-note .course-button {
+            margin-top: 8px;
+        }
+
+        @keyframes courseFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+                gap: 22px;
+            }
+
+            .course-image {
+                height: 230px;
+            }
+
+            .course-content {
+                padding: 22px;
+            }
+
+            .course-content h2 {
+                font-size: 22px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .course-card {
+                animation: none;
+                transition: none;
+            }
+
+            .course-card:hover {
+                transform: none;
+            }
+
+            .course-image img {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <div class="brand">
+            <a href="../index.html"
+               style="color: inherit; text-decoration: none;">
+                Kala Bharati
+            </a>
+        </div>
+
+        <nav aria-label="Main navigation">
+            <a href="../index.html">Home</a>
+            <a href="about.html">About</a>
+            <a href="courses.html" aria-current="page">Courses</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="videos.html">Videos</a>
+            <a href="events.html">Events</a>
+            <a href="admissions.html">Admissions</a>
+        </nav>
+    </header>
+
+    <!-- Page heading -->
+    <section class="page-hero">
+        <h1>Our Bharatanatyam Courses</h1>
+        <p>
+            Discover the beauty of classical dance through rhythm,
+            expression, discipline and tradition.
+        </p>
+    </section>
+
+    <!-- Courses section -->
+    <main class="content-section">
+
+        <div class="courses-intro">
+            <p>
+                At Kala Bharati Bharatanatyam Academy, students can explore
+                Bharatanatyam through progressive learning levels.
+                Each level focuses on developing technique, confidence,
+                artistic expression and an appreciation of Indian culture.
+            </p>
+        </div>
+
+        <div class="courses-grid">
+
+            <!-- Beginner Course -->
+            <article class="course-card">
+                <div class="course-image">
+                    <img src="../images/course-beginners.jpg"
+                                alt="Bharatanatyam beginner dancer"
+                                loading="lazy">
+                         
+                    <span class="course-level">Level 1</span>
+                </div>
+
+                <div class="course-content">
+                    <h2>Beginners</h2>
+
+                    <p>
+                        An introduction to Bharatanatyam for students who
+                        are starting their classical dance journey.
+                    </p>
+
+                    <h3>What you will learn</h3>
+
+                    <ul class="course-topics">
+                        <li>Basic body postures and movements</li>
+                        <li>Introduction to hand gestures (mudras)</li>
+                        <li>Basic rhythm and coordination</li>
+                        <li>Foundational dance practice</li>
+                    </ul>
+
+                    <a class="course-button" href="admissions.html">
+                        Enquire About This Course
+                    </a>
+                </div>
+            </article>
+
+            <!-- Junior Course -->
+            <article class="course-card">
+                <div class="course-image">
+                    
+<img class="junior-course-img"
+     src="../images/course-junior.jpg"
+     alt="Bharatanatyam junior dancer"
+     loading="lazy">
+
+                    <span class="course-level">Level 2</span>
+                </div>
+
+                <div class="course-content">
+                    <h2>Junior Level</h2>
+
+                    <p>
+                        Build on the basics and develop stronger technique,
+                        rhythm, coordination and expressive movement.
+                    </p>
+
+                    <h3>What you will learn</h3>
+
+                    <ul class="course-topics">
+                        <li>Adavus and movement combinations</li>
+                        <li>Improved rhythm and footwork</li>
+                        <li>Facial expressions and storytelling</li>
+                        <li>Short dance sequences</li>
+                    </ul>
+
+                    <a class="course-button" href="admissions.html">
+                        Enquire About This Course
+                    </a>
+                </div>
+            </article>
+
+            <!-- Senior Course -->
+            <article class="course-card">
+                <div class="course-image">
+                   <img src="../images/course-senior.jpg"
+     alt="Bharatanatyam senior dancer"
+     loading="lazy">
+                    <span class="course-level">Level 3</span>
+                </div>
+
+                <div class="course-content">
+                    <h2>Senior Level</h2>
+
+                    <p>
+                        Strengthen your artistic skills through more
+                        advanced technique, expressive storytelling
+                        and choreography.
+                    </p>
+
+                    <h3>What you will learn</h3>
+
+                    <ul class="course-topics">
+                        <li>Advanced dance combinations</li>
+                        <li>Abhinaya and expressive storytelling</li>
+                        <li>Greater control of rhythm and movement</li>
+                        <li>Performance practice and choreography</li>
+                    </ul>
+
+                    <a class="course-button" href="admissions.html">
+                        Enquire About This Course
+                    </a>
+                </div>
+            </article>
+
+            <!-- Vidvat Course -->
+            <article class="course-card">
+                <div class="course-image">
+                    <img src="../images/course-vidvat.jpg"
+     alt="Bharatanatyam advanced dancer"
+     loading="lazy">
+                    <span class="course-level">Advanced</span>
+                </div>
+
+                <div class="course-content">
+                    <h2>Vidvat Level</h2>
+
+                    <p>
+                        A higher-level learning pathway for students seeking
+                        deeper study, artistic refinement and performance
+                        preparation.
+                    </p>
+
+                    <h3>What you will explore</h3>
+
+                    <ul class="course-topics">
+                        <li>Refinement of classical dance technique</li>
+                        <li>Detailed expressive interpretation</li>
+                        <li>Repertoire and choreography development</li>
+                        <li>Advanced performance preparation</li>
+                    </ul>
+
+                    <a class="course-button" href="admissions.html">
+                        Enquire About This Course
+                    </a>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Enquiry section -->
+        <section class="course-note">
+            <h2>Not Sure Which Level Is Right for You?</h2>
+
+            <p>
+                We would be happy to help you explore a suitable learning
+                level. Contact the academy to enquire about course
+                availability, class timings, eligibility and fees.
+            </p>
+
+            <a href="admissions.html" class="course-button">
+                Explore Admissions
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>
+            © 2026 Kala Bharati Bharatanatyam Academy.
+            All rights reserved.
+        </p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login | Kala Bharati</title>
+    <link rel="stylesheet" href="pages.css">
+    <style>
+        .login-card {
+            max-width: 420px;
+            margin: 50px auto;
+            padding: 30px;
+            background: var(--white);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(75,24,36,.08);
+        }
+        .login-card h2 { color: var(--maroon); text-align: center; }
+        .login-card label {
+            display: block;
+            margin: 16px 0 7px;
+            font-weight: 600;
+        }
+        .login-card input {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            font: inherit;
+        }
+        .login-card button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: 0;
+            border-radius: 8px;
+            background: var(--maroon);
+            color: white;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .login-card button:disabled { opacity: .65; }
+        #loginMessage {
+            margin-top: 16px;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+        .back-link { text-align: center; margin-top: 18px; }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="brand">
+            <a href="../index.html" style="color:inherit;text-decoration:none">
+                Kala Bharati
+            </a>
+        </div>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="student-login.html">Student Login</a>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <h1>Student Portal</h1>
+        <p>Sign in to access your academy portal</p>
+    </section>
+
+    <main class="content-section">
+        <form class="login-card" id="loginForm">
+            <h2>Student Login</h2>
+
+            <label for="username">Unique Username</label>
+            <input
+                type="text"
+                id="username"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button id="loginButton" type="submit">Log In</button>
+            <p id="loginMessage" role="status" aria-live="polite"></p>
+            <p class="back-link">
+                <a href="../index.html">← Back to Home</a>
+            </p>
+        </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://tvfwvsntplommjwvedpb.supabase.co";
+
+        // Replace this placeholder with the same publishable key
+        // already used in your working Teacher Login page.
+        const SUPABASE_PUBLISHABLE_KEY =
+            "sb_publishable__XZhyFocE3eDXgVhxg0bhA_1WxHP5Bf";
+
+        const client = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
+
+        const form = document.getElementById("loginForm");
+        const button = document.getElementById("loginButton");
+        const message = document.getElementById("loginMessage");
+
+        form.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            button.disabled = true;
+            button.textContent = "Signing in...";
+            message.textContent = "";
+
+            try {
+                const username = document.getElementById("username")
+                    .value.trim().toLowerCase();
+
+                const password = document.getElementById("password").value;
+
+                const internalEmail =
+                    username + "@demo.kalabharati.invalid";
+
+                const { data, error } = await client.auth.signInWithPassword({
+                    email: internalEmail,
+                    password: password
+                });
+
+                if (error) {
+                    throw new Error("Invalid username or password.");
+                }
+
+                const { data: profile, error: profileError } = await client
+                    .from("profiles")
+                    .select("role")
+                    .eq("id", data.user.id)
+                    .single();
+
+                if (
+                    profileError ||
+                    !profile ||
+                    profile.role !== "student"
+                ) {
+                    await client.auth.signOut();
+                    throw new Error(
+                        "This account is not authorized for Student access."
+                    );
+                }
+
+                window.location.href = "student-dashboard.html";
+
+            } catch (error) {
+                message.textContent =
+                    error.message || "Login failed. Please try again.";
+            } finally {
+                button.disabled = false;
+                button.textContent = "Log In";
+            }
+        });
+    </script>
+</body>
+</html>
