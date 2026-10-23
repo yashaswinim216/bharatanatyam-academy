@@ -47,21 +47,29 @@
         <p id="welcome">Verifying your access...</p>
         <p id="status" role="status" aria-live="polite"></p>
 
-        <section class="cards">
-            <article class="card">
-                <h3>My Classes</h3>
-                <p>View your Bharatanatyam class information.</p>
-            </article>
-            <article class="card">
-                <h3>Students</h3>
-                <p>Student information will be available here once connected.</p>
-            </article>
-            <article class="card">
-                <h3>Academy Events</h3>
-                <p>View upcoming academy events and workshops.</p>
-                <a href="events.html">View Events</a>
-            </article>
-        </section>
+       
+<section class="cards">
+    <article class="card">
+        <h3>My Classes</h3>
+        <div id="teacherClasses">
+            Loading your assigned classes...
+        </div>
+    </article>
+
+    <article class="card">
+        <h3>My Students</h3>
+        <div id="teacherStudents">
+            Loading your students...
+        </div>
+    </article>
+
+    <article class="card">
+        <h3>Academy Events</h3>
+        <p>View upcoming academy events and workshops.</p>
+        <a href="events.html">View Events</a>
+    </article>
+</section>
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -98,6 +106,9 @@
                     "Welcome, " + (profile.full_name || "Teacher") + "!";
                 document.getElementById("status").textContent =
                     "Teacher access verified.";
+                    document.getElementById("welcome").textContent =
+    "Welcome, " + (profile.full_name || "Teacher") + "!";
+    await loadTeacherClasses(data.user.id);
 
             } catch (error) {
                 document.getElementById("status").textContent =
@@ -109,6 +120,77 @@
             await client.auth.signOut();
             window.location.replace("teacher-login.html");
         });
+        
+async function loadTeacherClasses(teacherId) {
+    const classesBox = document.getElementById("teacherClasses");
+    const studentsBox = document.getElementById("teacherStudents");
+
+    try {
+        const { data: classes, error } = await client
+            .from("class_assignments")
+            .select("course_level, days, timing, instructor_title")
+            .eq("teacher_id", teacherId);
+
+        if (error) throw error;
+
+        classesBox.replaceChildren();
+
+        if (!classes || classes.length === 0) {
+            classesBox.textContent = "No classes assigned to you yet.";
+            studentsBox.textContent =
+                "Students will appear after classes are assigned.";
+            return;
+        }
+
+        classes.forEach(item => {
+            const card = document.createElement("div");
+            card.style.marginBottom = "14px";
+
+            const heading = document.createElement("h4");
+            heading.textContent = item.course_level;
+
+            const details = document.createElement("p");
+            details.textContent =
+                `${item.days} · ${item.timing} · ${item.instructor_title}`;
+
+            card.append(heading, details);
+            classesBox.appendChild(card);
+        });
+
+        const levels = classes.map(item => item.course_level);
+
+        const { data: students, error: studentError } = await client
+            .from("profiles")
+            .select("full_name, username, course_level")
+            .eq("role", "student")
+            .in("course_level", levels);
+
+        if (studentError) throw studentError;
+
+        studentsBox.replaceChildren();
+
+        if (!students || students.length === 0) {
+            studentsBox.textContent =
+                "No students found in your assigned classes.";
+            return;
+        }
+
+        students.forEach(student => {
+            const entry = document.createElement("p");
+            entry.textContent =
+                `${student.full_name || "Student"} — ${student.course_level}`;
+            studentsBox.appendChild(entry);
+        });
+
+    } catch (error) {
+        console.error("Teacher dashboard error:", error);
+        classesBox.textContent =
+            "Unable to load classes. Check Supabase permissions.";
+        studentsBox.textContent =
+            "Unable to load students. Check Supabase permissions.";
+    }
+}
+
 
         protectDashboard();
     </script>

@@ -255,6 +255,42 @@
     </div>
 </section>
 
+<section class="dashboard-card" style="margin-top:25px;">
+    <h2>Assign Teacher to Class</h2>
+    <p>Choose a class level and assign a teacher account.</p>
+
+    <button type="button" id="loadTeachersButton" class="logout">
+        Load Teachers
+    </button>
+
+    <form id="assignTeacherForm"
+          style="max-width:520px;margin-top:20px;">
+
+        <label for="teacherClassLevel">Class Level</label>
+        <select id="teacherClassLevel" required>
+            <option value="Vidvat">Vidvat</option>
+            <option value="Senior">Senior</option>
+            <option value="Junior">Junior</option>
+            <option value="Beginners">Beginners</option>
+            <option value="New Joiners">New Joiners</option>
+        </select>
+
+        <label for="teacherSelect">Select Teacher</label>
+        <select id="teacherSelect" required disabled>
+            <option value="">Load teachers first</option>
+        </select>
+
+        <button type="submit" id="saveTeacherAssignmentButton"
+                class="logout" disabled>
+            Save Teacher Assignment
+        </button>
+    </form>
+
+    <p id="teacherAssignmentStatus"
+       role="status" aria-live="polite"></p>
+</section>
+
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -658,9 +694,147 @@ assignCourseForm.addEventListener("submit", async event => {
         saveCourseButton.textContent = "Save Course Assignment";
     }
 });
+const classDetails = {
+    "Vidvat": {
+        days: "Saturday",
+        timing: "9:00–11:00 AM",
+        title: "Principal Teacher"
+    },
+    "Senior": {
+        days: "Saturday",
+        timing: "4:00–5:30 PM",
+        title: "Senior Instructor"
+    },
+    "Junior": {
+        days: "Sunday",
+        timing: "10:00–11:00 AM",
+        title: "Senior Instructor"
+    },
+    "Beginners": {
+        days: "Wednesday & Friday",
+        timing: "5:00–6:00 PM",
+        title: "Assistant Instructor"
+    },
+    "New Joiners": {
+        days: "Sunday",
+        timing: "11:30 AM–12:30 PM",
+        title: "Assistant Instructor"
+    }
+};
+
+const loadTeachersButton =
+    document.getElementById("loadTeachersButton");
+const teacherSelect = document.getElementById("teacherSelect");
+const teacherClassLevel =
+    document.getElementById("teacherClassLevel");
+const saveTeacherButton =
+    document.getElementById("saveTeacherAssignmentButton");
+const teacherAssignmentStatus =
+    document.getElementById("teacherAssignmentStatus");
+
+loadTeachersButton.addEventListener("click", async () => {
+    loadTeachersButton.disabled = true;
+    teacherAssignmentStatus.textContent = "Loading teachers...";
+
+    try {
+        await verifyAdminForAssignment();
+
+        const { data: teachers, error } = await client
+            .from("profiles")
+            .select("id, full_name, username")
+            .eq("role", "teacher")
+            .order("full_name");
+
+        if (error) throw error;
+
+        teacherSelect.replaceChildren();
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Choose a teacher";
+        teacherSelect.appendChild(placeholder);
+
+        (teachers || []).forEach(teacher => {
+            const option = document.createElement("option");
+            option.value = teacher.id;
+            option.textContent =
+                `${teacher.full_name || "Teacher"} (${teacher.username || "No username"})`;
+            teacherSelect.appendChild(option);
+        });
+
+        teacherSelect.disabled = false;
+        saveTeacherButton.disabled = !teachers?.length;
+
+        teacherAssignmentStatus.textContent = teachers?.length
+            ? `Loaded ${teachers.length} teacher account(s).`
+            : "No teacher accounts found.";
+
+    } catch (error) {
+        teacherAssignmentStatus.textContent =
+            error.message || "Could not load teachers.";
+    } finally {
+        loadTeachersButton.disabled = false;
+    }
+});
+
+document.getElementById("assignTeacherForm")
+    .addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const level = teacherClassLevel.value;
+        const teacherId = teacherSelect.value;
+        const details = classDetails[level];
+
+        if (!teacherId || !details) {
+            teacherAssignmentStatus.textContent =
+                "Please select a class and teacher.";
+            return;
+        }
+
+        saveTeacherButton.disabled = true;
+        teacherAssignmentStatus.textContent = "Saving assignment...";
+
+        try {
+            await verifyAdminForAssignment();
+
+            const { data: authData, error: authError } =
+                await client.auth.getUser();
+
+            if (authError || !authData.user) {
+                throw new Error("Please log in again.");
+            }
+
+            const assignment = {
+                course_level: level,
+                days: details.days,
+                timing: details.timing,
+                instructor_title: details.title,
+                teacher_id: teacherId,
+                assigned_by: authData.user.id
+            };
+
+            const { error } = await client
+                .from("class_assignments")
+                .upsert(assignment, { onConflict: "course_level" });
+
+            if (error) throw error;
+
+            teacherAssignmentStatus.textContent =
+                `Successfully assigned ${level} to the selected teacher.`;
+
+        } catch (error) {
+            console.error("Teacher assignment error:", error);
+            teacherAssignmentStatus.textContent =
+                error.message || "Could not save teacher assignment.";
+        } finally {
+            saveTeacherButton.disabled = false;
+        }
+    });
 
 
         protectDashboard();
+        
+ 
     </script>
 </body>
 </html>
